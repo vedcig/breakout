@@ -23,7 +23,7 @@ void Game::run()
 
     for (int t = 0; t < 3; ++t){
 
-    initVelocity(400 + t * 200);
+    initVelocity(200 + t * 100);
     sf::Time protekloVrijeme = sf::Time::Zero;
     sf::Time dt = sf::seconds(1.0/60.f);
 
@@ -71,7 +71,7 @@ void Game::run()
         map.load("tileset.png", sf::Vector2u(32, 32), level, 16, 3);
         if (e && mGameOver > 0){
             initPositions2(1, 10);
-            initVelocity(400 + t * 200);
+            initVelocity(200 + t * 100);
         }
         render();
         mScore.getLevel(t+1);
@@ -188,10 +188,19 @@ void Game::initPositions2(std::size_t nBalls, float radius){
 void Game::initVelocity(float maxVel)
 {
     std::uniform_real_distribution<float> uniform_dist(-maxVel/sqrt(2), maxVel/sqrt(2));
+    float a, b;
     for (int i = 0; i < mBall.size(); ++i){
-        mBall[i]->mVelocity.x = uniform_dist(mRand);
-        mBall[i]->mVelocity.y = uniform_dist(mRand);
+        a = 0.f;
+        b = 0.f;
+
+        while (std::abs(a) < maxVel/sqrt(2) * 3.f / 4 || std::abs(b) < maxVel/sqrt(2) * 3.f / 4){
+            a = uniform_dist(mRand);
+            b = uniform_dist(mRand);
+        }
+        mBall[i]->mVelocity.x = a;
+        mBall[i]->mVelocity.y = b;
     }
+
 }
 
 int Game::checkForCollisionsWithWalls(Ball * pball, sf::Time dt, int x1)
@@ -223,6 +232,28 @@ int Game::checkForCollisionsWithWalls(Ball * pball, sf::Time dt, int x1)
                 if (pball->mCircle.getPosition().y <= 32 * 0 + 5)
                 {
                     pball->mVelocity.y = -pball->mVelocity.y;
+                    if (j == 2 && pball->mVelocity.x > 0 || j == 4 && pball->mVelocity.x < 0 && x == 0){
+                        ++l[3];
+                        if (l[3] == 1 || l[3] == 2){
+                            sound1.play();
+                            return 16 * 3;
+                        }
+                        ++n;
+                        ++x;
+                        sound2.play();
+                        return 3;
+                    }
+                    if (j == 11 && pball->mVelocity.x > 0 || j == 13 && pball->mVelocity.x < 0 && y == 0){
+                        ++l[12];
+                        if (l[12] == 1 || l[12] == 2){
+                            sound1.play();
+                            return 16 * 3;
+                        }
+                        ++n;
+                        ++y;
+                        sound2.play();
+                        return 12;
+                    }
                     return 16 * 3;
                 }
             }
@@ -235,10 +266,12 @@ int Game::checkForCollisionsWithWalls(Ball * pball, sf::Time dt, int x1)
                             sound1.play();
                             return 16 * 3;
                         }
+
                         sound2.play();
                         a = j;
                         c[a] = 0;
                         ++n;
+
                         return a + (c[a] +1 - 1) * 16;
                 }
             }

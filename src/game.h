@@ -23,6 +23,8 @@ public:
     int k[16] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     int l[16] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     int n = 0;
+    int x = 0;
+    int y = 0;
 
     int isNotGameOver() const;
 
