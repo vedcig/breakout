@@ -14,6 +14,7 @@ Game::Game() : mWindow(sf::VideoMode(512, 400), "SFML mWindow")
     mRectangle.setPosition(5, 5);
 
     initPositions(1, 10);
+
 }
 
 void Game::run()
@@ -22,7 +23,8 @@ void Game::run()
     sf::Clock clock;
 
     for (int t = 0; t < 3; ++t){
-
+    if (t > 0)
+        initPositions2(1, 10);
     initVelocity(200 + t * 100);
     sf::Time protekloVrijeme = sf::Time::Zero;
     sf::Time dt = sf::seconds(1.0/60.f);
@@ -233,22 +235,22 @@ int Game::checkForCollisionsWithWalls(Ball * pball, sf::Time dt, int x1)
                 {
                     pball->mVelocity.y = -pball->mVelocity.y;
                     if (j == 2 && pball->mVelocity.x > 0 || j == 4 && pball->mVelocity.x < 0 && x == 0){
-                        ++l[3];
+                        /*++l[3];
                         if (l[3] == 1 || l[3] == 2){
                             sound1.play();
                             return 16 * 3;
-                        }
+                        }*/
                         ++n;
                         ++x;
                         sound2.play();
                         return 3;
                     }
                     if (j == 11 && pball->mVelocity.x > 0 || j == 13 && pball->mVelocity.x < 0 && y == 0){
-                        ++l[12];
+                        /*++l[12];
                         if (l[12] == 1 || l[12] == 2){
                             sound1.play();
                             return 16 * 3;
-                        }
+                        }*/
                         ++n;
                         ++y;
                         sound2.play();
@@ -261,11 +263,11 @@ int Game::checkForCollisionsWithWalls(Ball * pball, sf::Time dt, int x1)
                 if (pball->mCircle.getPosition().y <= 32 * 1 + 5)
                 {
                         pball->mVelocity.y = -pball->mVelocity.y;
-                        ++l[j];
+                        /*++l[j];
                         if (l[j] == 1 || l[j] == 2){
                             sound1.play();
                             return 16 * 3;
-                        }
+                        }*/
 
                         sound2.play();
                         a = j;
@@ -279,11 +281,11 @@ int Game::checkForCollisionsWithWalls(Ball * pball, sf::Time dt, int x1)
                 if (pball->mCircle.getPosition().y <= 32 * 2 + 5)
                 {
                         pball->mVelocity.y = -pball->mVelocity.y;
-                        ++k[j];
+                        /*++k[j];
                         if (k[j] == 1){
                             sound1.play();
                             return 16 * 3;
-                        }
+                        }*/
 
                         if (j == 3 || j == 12){
                             sound1.play();
